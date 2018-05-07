@@ -1,0 +1,12 @@
+replicaCount:
+maxReplicaCount:
+image:
+  repo:
+  tag:
+cpuLimit:
+memoryLimit:
+cpuRequests: 300m
+memoryRequests: 400M
+env:
+  env:
+host:

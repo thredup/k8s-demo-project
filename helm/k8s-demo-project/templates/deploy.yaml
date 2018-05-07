@@ -1,0 +1,77 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: "50%"
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      dnsPolicy: Default
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "720913919698.dkr.ecr.us-east-1.amazonaws.com/k8s-demo-project:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "{{.Values.cpuRequests}}"
+              memory: "{{.Values.memoryRequests}}"
+            limits:
+              memory: "{{.Values.memoryLimit}}"
+          ports:
+            - name: http
+              containerPort: 8080
+          lifecycle:
+            # This hook is called immediately before a container is terminated.
+            # It is blocking, so must complete before the call to delete the container can be sent.
+            preStop:
+              exec:
+                # Sleep for 10 seconds while pod is removed from load balancer
+                command: ['/bin/sh', '-c', 'sleep 10 && echo $(date): preStop hook - Sleep expired >> /dev/termination-log']
+          # Readiness Probe: determine if app is ready to serve requests.
+          # Default state is "failure"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            # After an initial 5 second delay
+            initialDelaySeconds: 5
+            # Check readiness every 10 seconds
+            periodSeconds: 10
+            # The probe must respond within 1 second to be considered a success
+            timeoutSeconds: 1
+            # If 3 probes fail, remove pod from service load balancer
+            failureThreshold: 3
+            # After 1 success, add pod to service load balancer
+            successThreshold: 1
+          # Liveness: determine if app is running correctly
+          # Default state is "success"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            failureThreshold: 3
+            successThreshold: 1
+          env:
+            - name: K8S_ENV
+              value: "true"
+            - name: NODE_ENV
+              value: {{ .Values.env.env }}

@@ -1,0 +1,7 @@
+replicaCount: 3
+maxReplicaCount: 10
+cpuLimit: 1000m
+memoryLimit: 1000M
+env:
+  env: selfoss
+elb: true
