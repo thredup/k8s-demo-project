@@ -1,3 +1,5 @@
+config_change = false
+
 pipeline {
   agent none
   options {
@@ -6,7 +8,22 @@ pipeline {
     ansiColor('xterm')
   }
   stages {
-
+    stage ('Define type of change') {
+      when {
+        allOf {
+          not {
+            changeset 'helm/**'
+          }
+          not { changeset 'Jenkinsfile' }
+          changeset '**'
+        }
+      }
+      steps {
+        echo "This is only config change"
+        config_change = true
+        echo "${config_change}"
+      }
+    }
     stage('Test and build image') {
       parallel {
         stage ('Test') {
