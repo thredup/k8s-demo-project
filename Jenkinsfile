@@ -10,7 +10,6 @@ pipeline {
   stages {
     stage ('Define type of change') {
       agent any
-      }
       steps {
         sh "shopt -s extglob; git diff HEAD~1..HEAD !(@(helm))"
       }
