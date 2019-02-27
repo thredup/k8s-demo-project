@@ -6,7 +6,7 @@ def checkCodeChanges() {
             cat << EOF | bash
             #!/bin/bash
             shopt -s extglob
-            git diff HEAD~1..HEAD !(@(helm|Jenkinsfile))
+            git diff --exit-code HEAD~1..HEAD !(@(helm))
             EOF
           """.stripIndent()
         return false
@@ -30,7 +30,7 @@ pipeline {
     stage ('Define type of change') {
       agent any
       when {
-        expression { dummy() }
+        expression { checkCodeChanges() }
       }
       steps {
         echo "There are code changes"
