@@ -17,7 +17,7 @@ pipeline {
             shopt -s extglob
             git diff HEAD~1..HEAD !(helm)
             EOF
-          """
+          """.stripIndent()
       }
     }
     stage('Test and build image') {
