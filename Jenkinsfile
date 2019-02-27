@@ -15,6 +15,10 @@ def checkCodeChanges() {
     }
 }
 
+def dummy() {
+  return true
+}
+
 pipeline {
   agent none
   options {
@@ -26,7 +30,7 @@ pipeline {
     stage ('Define type of change') {
       agent any
       when {
-        expression { return checkCodeChanges() }
+        expression { dummy() }
       }
       steps {
         echo "There are code changes"
