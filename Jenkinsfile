@@ -26,7 +26,7 @@ pipeline {
     stage ('Define type of change') {
       agent any
       when {
-        expression { checkCodeChanges() }
+        expression { return checkCodeChanges() }
       }
       steps {
         echo "There are code changes"
