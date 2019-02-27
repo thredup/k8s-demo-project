@@ -1,4 +1,19 @@
-config_change = true
+def checkCodeChanges() {
+    try {
+        // git diff will return 1 for changes (failure) which is caught in catch, or
+        // 0 meaning no changes 
+        sh """
+            cat << EOF | bash
+            #!/bin/bash
+            shopt -s extglob
+            git diff HEAD~1..HEAD !(@(helm))
+            EOF
+          """.stripIndent()
+        return false
+    } catch (err) {
+        return true
+    }
+}
 
 pipeline {
   agent none
@@ -10,14 +25,11 @@ pipeline {
   stages {
     stage ('Define type of change') {
       agent any
+      when {
+        expression { checkCodeChanges() }
+      }
       steps {
-        sh """
-            cat << EOF | bash
-            #!/bin/bash
-            shopt -s extglob
-            git diff HEAD~1..HEAD !(helm)
-            EOF
-          """.stripIndent()
+        echo "There are code changes"
       }
     }
     stage('Test and build image') {
