@@ -11,7 +11,9 @@ pipeline {
     stage ('Define type of change') {
       agent any
       steps {
-        sh "shopt -s extglob; git diff HEAD~1..HEAD !(@(helm))"
+        script {
+          sh 'shopt -s extglob; git diff HEAD~1..HEAD !(@(helm))'
+        }
       }
     }
     stage('Test and build image') {
