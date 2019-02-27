@@ -20,7 +20,9 @@ pipeline {
       }
       steps {
         echo "This is only config change"
-        config_change = true
+        script {
+          config_change = true
+        }
         echo "${config_change}"
       }
     }
