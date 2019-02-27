@@ -9,6 +9,7 @@ pipeline {
   }
   stages {
     stage ('Define type of change') {
+      agent any
       when {
         allOf {
           not {
