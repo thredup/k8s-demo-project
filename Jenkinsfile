@@ -11,10 +11,11 @@ pipeline {
     stage ('Define type of change') {
       agent any
       steps {
-        script {
-          sh "bash -c 'shopt -s extglob'" 
-          sh "bash -c 'git diff HEAD~1..HEAD !(helm)'"
-        }
+        sh "cat << EOF | bash
+            #!/bin/bash
+            shopt -s extglob
+            git diff HEAD~1..HEAD !(helm)
+            EOF"
       }
     }
     stage('Test and build image') {
