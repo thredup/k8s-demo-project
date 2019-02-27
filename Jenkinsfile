@@ -6,7 +6,7 @@ def checkCodeChanges() {
             cat << EOF | bash
             #!/bin/bash
             shopt -s extglob
-            git diff HEAD~1..HEAD !(@(helm))
+            git diff HEAD~1..HEAD !(@(helm,Jenkinsfile))
             EOF
           """.stripIndent()
         return false
