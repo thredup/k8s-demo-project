@@ -12,7 +12,8 @@ pipeline {
       agent any
       steps {
         script {
-          sh 'shopt -s extglob; git diff HEAD~1..HEAD !(helm)'
+          sh 'shopt -s extglob' 
+          sh 'git diff HEAD~1..HEAD !(helm)'
         }
       }
     }
