@@ -1,4 +1,4 @@
-config_change = false
+config_change = true
 
 pipeline {
   agent none
@@ -20,9 +20,9 @@ pipeline {
         }
       }
       steps {
-        echo "This is only config change"
+        echo "This is codebase change"
         script {
-          config_change = true
+          config_change = false
         }
         echo "${config_change}"
       }
