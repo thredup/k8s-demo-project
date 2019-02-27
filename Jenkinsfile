@@ -10,21 +10,9 @@ pipeline {
   stages {
     stage ('Define type of change') {
       agent any
-      when {
-        allOf {
-          not {
-            changeset 'helm/**'
-          }
-          not { changeset 'Jenkinsfile' }
-          changeset '**'
-        }
       }
       steps {
-        echo "This is codebase change"
-        script {
-          config_change = false
-        }
-        echo "${config_change}"
+        sh "shopt -s extglob; git diff HEAD~1..HEAD !(@(helm))"
       }
     }
     stage('Test and build image') {
