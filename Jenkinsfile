@@ -13,7 +13,7 @@ pipeline {
             genericTemplate( 
               containers: [containerTemplate(name: 'generic', image: 'alpine:3.7', ttyEnabled: true)] 
             ) {
-              customCheckout(null)
+              scm
               pipeline.init()
               echo 'Verify checkout!!!'
               sh 'ls -la'
