@@ -9,7 +9,7 @@ pipeline {
     stage ('Pre-requisits') {
       steps {
         script {
-          initPipeline()
+          initPipeline(useGithubApi: false)
             // def pipeline = new com.thredup.Pipeline()
             // genericTemplate( 
             //   containers: [] 
