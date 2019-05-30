@@ -8,24 +8,7 @@ pipeline {
   stages {
     stage ('Pre-requisits') {
       steps {
-        script {
-          initPipeline(useGithubApi: false, shallowCheckout: false)
-            //def pipeline = new com.thredup.Pipeline()
-            // genericTemplate( 
-            //   containers: [] 
-            // ) {
-            //   checkout(
-            //     [ $class: 'GitSCM',
-            //       doGenerateSubmoduleConfigurations: false,
-            //       extensions: scm.extensions+[[$class: 'CloneOption', noTags: true, reference: '', shallow: false]],
-            //       submoduleCfg: [],
-            //       userRemoteConfigs: scm.userRemoteConfigs+[[credentialsId: 'tup-jenkins']]
-            //     ] + 
-            //     (null ? [branches: [[name: pCommitId]]] : [])
-            //   )
-            //   pipeline.init()
-            // }
-        }
+        initPipeline(useGithubApi: false, shallowCheckout: false)
       }
     }
     stage ('Push helm chart to registry') {
