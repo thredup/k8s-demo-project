@@ -11,7 +11,7 @@ pipeline {
         script {
             def pipeline = new com.thredup.Pipeline()
             genericTemplate( 
-              containers: [containerTemplate(name: 'generic', image: 'alpine:3.7', ttyEnabled: true)] 
+              containers: [] 
             ) {
               checkout scm
               pipeline.init()
