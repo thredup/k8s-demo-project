@@ -20,7 +20,7 @@ pipeline {
                   submoduleCfg: [],
                   userRemoteConfigs: scm.userRemoteConfigs+[[credentialsId: 'tup-jenkins']]
                 ] + 
-                (pCommitId ? [branches: [[name: pCommitId]]] : [])
+                (null ? [branches: [[name: pCommitId]]] : [])
               )
               pipeline.init()
             }
