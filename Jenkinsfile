@@ -14,6 +14,7 @@ pipeline {
         }
       }
       steps{
+        'Get Commit Info' : { initPipeline(useGithubApi: false) }
         helmContainer {
           sh "helm plugin install https://github.com/chartmuseum/helm-push"
           sh "helm repo add tup 'http://charts.k8s.thredtest.com:8080'"
