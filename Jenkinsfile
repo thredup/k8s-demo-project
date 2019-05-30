@@ -9,15 +9,14 @@ pipeline {
     stage ('Pre-requisits') {
       steps {
         script {
-            def pipeline = new com.thredup.Pipeline()
-            genericTemplate( 
-              containers: [] 
-            ) {
-              checkout scm
-              pipeline.init()
-              echo 'Verify checkout!!!'
-              sh 'ls -la'
-            }
+          initPipeline()
+            // def pipeline = new com.thredup.Pipeline()
+            // genericTemplate( 
+            //   containers: [] 
+            // ) {
+            //   checkout scm
+            //   pipeline.init()
+            // }
         }
       }
     }
