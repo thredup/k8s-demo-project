@@ -6,7 +6,21 @@ pipeline {
     ansiColor('xterm')
   }
   stages {
-
+    stage ('Push helm chart to registry') {
+      when {
+        allOf {
+          branch 'master'
+          changeset "./helm/${env.NAME}/**/*.*"
+        }
+        steps{
+          helmContainer {
+            sh "helm plugin install https://github.com/chartmuseum/helm-push"
+            sh "helm repo add tup 'http://charts.k8s.thredtest.com:8080'"
+            sh "helm push ./helm/${env.NAME} tup"
+          }
+        }
+      }
+    }
     stage('Test and build image') {
       parallel {
         stage ('Test') {
