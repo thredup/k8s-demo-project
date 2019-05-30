@@ -6,6 +6,21 @@ pipeline {
     ansiColor('xterm')
   }
   stages {
+    stage ('Pre-requisits') {
+      steps {
+        script {
+            def pipeline = new com.thredup.Pipeline()
+            genericTemplate( 
+              containers: [containerTemplate(name: 'generic', image: 'alpine:3.7', ttyEnabled: true)] 
+            ) {
+              customCheckout(null)
+              pipeline.init()
+              echo 'Verify checkout!!!'
+              sh 'ls -la'
+            }
+        }
+      }
+    }
     stage ('Push helm chart to registry') {
       when {
         allOf {
@@ -14,7 +29,6 @@ pipeline {
         }
       }
       steps{
-        initPipeline(useGithubApi: false)
         helmContainer {
           sh "helm plugin install https://github.com/chartmuseum/helm-push"
           sh "helm repo add tup 'http://charts.k8s.thredtest.com:8080'"
