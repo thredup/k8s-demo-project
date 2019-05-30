@@ -16,7 +16,6 @@ pipeline {
         allOf {
           branch 'master'
           changeset "helm/env/**/*.*"
-          //changeset "Jenkinsfile"
         }
       }
       steps{
