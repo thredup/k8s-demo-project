@@ -9,14 +9,21 @@ pipeline {
     stage ('Pre-requisits') {
       steps {
         script {
-          initPipeline(useGithubApi: false)
-            // def pipeline = new com.thredup.Pipeline()
-            // genericTemplate( 
-            //   containers: [] 
-            // ) {
-            //   checkout scm
-            //   pipeline.init()
-            // }
+            def pipeline = new com.thredup.Pipeline()
+            genericTemplate( 
+              containers: [] 
+            ) {
+              checkout(
+                [ $class: 'GitSCM',
+                  doGenerateSubmoduleConfigurations: false,
+                  extensions: scm.extensions+[[$class: 'CloneOption', noTags: true, reference: '', shallow: false]],
+                  submoduleCfg: [],
+                  userRemoteConfigs: scm.userRemoteConfigs+[[credentialsId: 'tup-jenkins']]
+                ] + 
+                (pCommitId ? [branches: [[name: pCommitId]]] : [])
+              )
+              pipeline.init()
+            }
         }
       }
     }
