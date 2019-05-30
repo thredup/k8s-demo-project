@@ -13,7 +13,7 @@ pipeline {
             genericTemplate( 
               containers: [containerTemplate(name: 'generic', image: 'alpine:3.7', ttyEnabled: true)] 
             ) {
-              scm
+              customCheckout(env.GIT_COMMIT_ID)
               pipeline.init()
               echo 'Verify checkout!!!'
               sh 'ls -la'
