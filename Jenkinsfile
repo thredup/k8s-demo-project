@@ -15,7 +15,7 @@ pipeline {
       when {
         allOf {
           branch 'master'
-          changeset "helm/env/**/*.*"
+          changeset "helm/${env.NAME}/**/*.*"
         }
       }
       steps{
