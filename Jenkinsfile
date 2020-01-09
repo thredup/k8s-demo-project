@@ -14,17 +14,16 @@ pipeline {
     stage ('Push helm chart to registry') {
       when {
         allOf {
-          branch 'master'
-          changeset "helm/${env.NAME}/**/*.*"
+          branch 'helm'
+          // changeset "helm/${env.NAME}/**/*.*"
         }
       }
       steps{
-        helmContainer {
-          sh "apk add --no-cache git"
-          sh "helm init --client-only"
-          sh "helm plugin install https://github.com/chartmuseum/helm-push"
-          sh "helm repo add tup 'http://charts.k8s.thredtest.com:8080'"
-          sh "helm push ./helm/${env.NAME} tup"
+        helm3Container {
+          sh "helm chart save ./helm/${env.NAME} registry.k8s.thredtest.com/${env.NAME}:${env.GIT_COMMIT_ID}"
+          sh "helm chart save ./helm/${env.NAME} registry.k8s.thredtest.com/${env.NAME}:latest"
+          sh "helm chart push registry.k8s.thredtest.com/${env.NAME}:${env.GIT_COMMIT_ID}"
+          sh "helm chart push registry.k8s.thredtest.com/${env.NAME}:latest"
         }
       }
     }
