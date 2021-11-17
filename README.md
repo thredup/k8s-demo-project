@@ -1,2 +1,2 @@
 # k8s-demo-project
-verify
+verify pullaprove
