@@ -1,0 +1,7 @@
+version: 3
+
+groups:
+  pullapprove:
+    reviewers:
+      users:
+        - osnagovskyi
