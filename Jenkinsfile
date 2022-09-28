@@ -44,7 +44,6 @@ pipeline {
       when {
         anyOf {
           branch 'master'
-          branch 'arm64'
           expression { BRANCH_NAME ==~ /staging.*/ }
         }
       }
