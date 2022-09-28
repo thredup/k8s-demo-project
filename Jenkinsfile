@@ -28,6 +28,7 @@ pipeline {
           }
           steps {
             kanikoArm64Container(serviceAccount: 'jenkins') {
+              sh "sleep 60"
               sh "executor \
                   --context=. \
                   ${env.IMAGE_DESTINATION} \
