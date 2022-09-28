@@ -34,6 +34,7 @@ pipeline {
                   --build-arg=NODE_ENV=production \
                   --build-arg=NPM_TOKEN=${env.NPM_TOKEN} \
                   --build-arg=REVISION=${env.GIT_SHA}"
+            }
           }
         }
       }
