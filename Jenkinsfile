@@ -53,6 +53,11 @@ pipeline {
         }
       }
     }
+    stage ('Push multi-arch image') {
+      steps {
+        manifestContainer(){}
+      }
+    }
 
     stage ('Deploy to staging') {
       when {
