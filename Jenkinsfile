@@ -55,16 +55,7 @@ pipeline {
     }
     stage ('Push multi-arch image') {
       steps {
-        manifestContainer() {
-                  sh "manifest-tool inspect 720913919698.dkr.ecr.us-east-1.amazonaws.com/k8s-demo-project:c9f2afbf4d72154cfa5979db6272e76c5cfe4ac1"
-                  sh "sleep 300"
-                  sh """
-                      manifest-tool push from-args \
-                        --platforms linux/amd64,linux/arm64 \
-                        --template ${env.ECR}/${env.NAME}:${env.GIT_COMMIT_ID}-ARCH \
-                        --target ${env.ECR}/${env.NAME}:${env.GIT_COMMIT_ID}
-                      """
-        }
+        manifestContainer() {}
       }
     }
 
