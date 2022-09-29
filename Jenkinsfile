@@ -56,6 +56,8 @@ pipeline {
     stage ('Push multi-arch image') {
       steps {
         manifestContainer() {
+                  sh "echo 'Debug step'"
+                  sh "manifest-tool inspect 720913919698.dkr.ecr.us-east-1.amazonaws.com/k8s-demo-project:c9f2afbf4d72154cfa5979db6272e76c5cfe4ac1"
                   sh """
                       manifest-tool push from-args \
                         --platforms linux/amd64,linux/arm64 \
