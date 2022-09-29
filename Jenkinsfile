@@ -55,7 +55,14 @@ pipeline {
     }
     stage ('Push multi-arch image') {
       steps {
-        manifestContainer(){}
+        manifestContainer() {
+                  sh """
+                      manifest-tool push from-args \
+                        --platforms linux/amd64,linux/arm64 \
+                        --template ${env.ECR}/${env.NAME}:${env.GIT_COMMIT_ID}-ARCH \
+                        --target ${env.ECR}/${env.NAME}:${env.GIT_COMMIT_ID}
+                      """
+        }
       }
     }
 
