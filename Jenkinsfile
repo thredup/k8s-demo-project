@@ -21,17 +21,30 @@ pipeline {
             }
           }
         }
-
-        stage ('Build image') {
+        stage ('Build amd64 image') {
+          environment {
+            NPM_TOKEN = credentials("npm-token")
+          }
+          steps {
+            kanikoContainer(serviceAccount: 'jenkins') {
+              sh "executor \
+                  --context=. \
+                  --destination=720913919698.dkr.ecr.us-east-1.amazonaws.com/k8s-demo-project:${env.GIT_COMMIT_ID}-amd64} \
+                  --build-arg=NODE_ENV=production \
+                  --build-arg=NPM_TOKEN=${env.NPM_TOKEN} \
+                  --build-arg=REVISION=${env.GIT_SHA}"
+            }
+          }
+        }
+        stage ('Build arm64 image') {
           environment {
             NPM_TOKEN = credentials("npm-token")
           }
           steps {
             kanikoArm64Container(serviceAccount: 'jenkins') {
-              sh "sleep 60"
               sh "executor \
                   --context=. \
-                  ${env.IMAGE_DESTINATION} \
+                  --destination=720913919698.dkr.ecr.us-east-1.amazonaws.com/k8s-demo-project:${env.GIT_COMMIT_ID}-arm64} \
                   --build-arg=NODE_ENV=production \
                   --build-arg=NPM_TOKEN=${env.NPM_TOKEN} \
                   --build-arg=REVISION=${env.GIT_SHA}"
