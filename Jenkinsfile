@@ -34,13 +34,6 @@ pipeline {
                   --build-arg=NPM_TOKEN=${env.NPM_TOKEN} \
                   --build-arg=REVISION=${env.GIT_SHA}"
             }
-          }
-        }
-        stage ('Build arm64 image') {
-          environment {
-            NPM_TOKEN = credentials("npm-token")
-          }
-          steps {
             kanikoArm64Container(serviceAccount: 'jenkins') {
               sh "executor \
                   --context=. \
@@ -49,15 +42,12 @@ pipeline {
                   --build-arg=NPM_TOKEN=${env.NPM_TOKEN} \
                   --build-arg=REVISION=${env.GIT_SHA}"
             }
+            manifestContainer() {}
           }
         }
       }
     }
-    stage ('Push multi-arch image') {
-      steps {
-        manifestContainer() {}
-      }
-    }
+
 
     stage ('Deploy to staging') {
       when {
