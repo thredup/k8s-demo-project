@@ -1,0 +1,24 @@
+name: Send Webhook
+
+on:
+  workflow_dispatch:
+
+jobs:
+  send-webhook:
+    runs-on:
+      group: linux-amd
+
+    steps:
+      - name: Send JSON payload to webhook
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" $WEBHOOK_URL
+        env:
+          JSON_PAYLOAD: |
+            {
+              "ttl": 48,
+              "presets": [
+                "shop_apps"
+              ],
+              "name": "ostestenv"
+            }
+          WEBHOOK_URL: https://dynamic-envs-api.internal.thredtest.com/
