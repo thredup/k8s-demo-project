@@ -5,8 +5,7 @@ on:
 
 jobs:
   send-webhook:
-    runs-on:
-      group: linux-amd
+    runs-on: runs-on,runner=2cpu-linux-x64,run-id=${{ github.run_id }}
 
     steps:
       - name: Send JSON payload to webhook
